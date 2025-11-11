@@ -35,6 +35,7 @@ Write a test suite for the Password class provided.
   
  * Artifacts to show during examination
    * Test suite as one file 
+   * One assert/expect per test ( unless strong reasons )
    * You should be able to run all your tests against any of the correct, or buggy versions. 
    * You should be able to run code coverage 
    * As close to 100% test coverage for all versions of the Password as possible, (note may not always be possible)
