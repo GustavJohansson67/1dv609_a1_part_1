@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PasswordTest {
     private IPassword getPassword(String s) throws Exception {
-        return (IPassword) new Password(s);
-        // return (IPassword) new BugDoesNotTrim(s);
+        //return (IPassword) new Password(s);
+        //return (IPassword) new BugDoesNotTrim(s);
         // return (IPassword) new BugToShortPassword(s);
         // return (IPassword) new BugToShortPassword(s);
         // return (IPassword) new BugVeryShort(s);
@@ -33,11 +33,18 @@ public class PasswordTest {
         // return (IPassword) new BugMissingPasswordLengthCheck(s);
         // return (IPassword) new BugMissingNumberCheck(s);
         // return (IPassword) new BugIsPasswordSameAlwaysTrue(s);
-        // return (IPassword) new BugWrongHashingAlgorithm(s);
+         return (IPassword) new BugWrongHashingAlgorithm(s);
     }
 
     @Test
     public void shouldAlwaysPass() throws Exception {
         assertTrue(true);
+    }
+
+    @Test
+    public void passwordShouldBeTrimmedForInputWithWhitespace() throws Exception {
+        IPassword pw = getPassword("123456789101112");
+        IPassword trimmedPW = getPassword("123456789101112    ");
+        assertTrue(pw.isPasswordSame(trimmedPW));
     }
 }
