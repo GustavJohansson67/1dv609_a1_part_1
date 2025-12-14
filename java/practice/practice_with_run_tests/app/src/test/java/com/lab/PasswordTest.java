@@ -62,4 +62,18 @@ public class PasswordTest {
         });
         assertEquals(e.getMessage(), "Does not contain a number");
     }
+
+    @Test
+    public void passwordShouldThrowExceptionForTooShortPassword() throws Exception {
+        Exception e = assertThrows(Exception.class, () -> {
+            getPassword("12345678901");
+        });
+        assertEquals(e.getMessage(), "To short password");
+    }
+
+    @Test
+    public void simpleHashShouldBeCorrectForPassword() throws Exception {
+        IPassword pw = getPassword("Password123!");
+        assertEquals(pw.getPasswordHash(), -1323532559);
+    }
 }

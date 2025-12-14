@@ -17,5 +17,6 @@ public class Main {
         }
 
         System.out.println(pw1.isPasswordSame(pw2));
+        System.out.println(pw1.getPasswordHash());
     }
 }
