@@ -24,8 +24,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PasswordTest {
     private IPassword getPassword(String s) throws Exception {
-        //return (IPassword) new Password(s);
-        //return (IPassword) new BugDoesNotTrim(s);
+        // return (IPassword) new Password(s);
+        // return (IPassword) new BugDoesNotTrim(s);
         // return (IPassword) new BugToShortPassword(s);
         // return (IPassword) new BugToShortPassword(s);
         // return (IPassword) new BugVeryShort(s);
@@ -37,42 +37,56 @@ public class PasswordTest {
          return (IPassword) new BugNew(s);
     }
 
-    @Test
+    @Test //1
     public void shouldAlwaysPass() throws Exception {
         assertTrue(true);
     }
 
-    @Test
+    @Test //2
     public void passwordShouldBeTrimmedForInputWithWhitespace() throws Exception {
         IPassword pw = getPassword("123456789101112");
         IPassword trimmedPW = getPassword("123456789101112    ");
         assertEquals(pw.getPasswordHash(), trimmedPW.getPasswordHash());
     }
 
-    @Test
-    public void passwordIsSameShouldReturnFalseForDifferentPassword() throws Exception {
+    @Test //3
+    public void isPasswordSameShouldReturnFalseForDifferentPassword() throws Exception {
         IPassword pw = getPassword("123456789101112");
         IPassword pw2 = getPassword("99999999999999999");
         assertFalse(pw.isPasswordSame(pw2));
     }
 
-    @Test
-    public void passwordShouldThrowExceptionForPasswordWithoutNumber() throws Exception {
+    @Test //4
+    public void isPasswordSameShouldReturnTrueForSamePassword() throws Exception {
+        IPassword pw = getPassword("Password123!");
+        IPassword pw2 = getPassword("Password123!");
+        assertTrue(pw.isPasswordSame(pw2));
+    }
+
+    @Test //5
+    public void passwordConstructorShouldThrowExceptionForPasswordWithoutNumber() throws Exception {
         Exception e = assertThrows(Exception.class, () -> {
             getPassword("aaaaaaaaaaaaaaaaaaaa");
         });
         assertEquals(e.getMessage(), "Does not contain a number");
     }
 
-    @Test
-    public void passwordShouldThrowExceptionForTooShortPassword() throws Exception {
+    @Test //6
+    public void passwordConstructorShouldThrowExceptionForTooShortPassword() throws Exception {
         Exception e = assertThrows(Exception.class, () -> {
             getPassword("12345678901");
         });
         assertEquals(e.getMessage(), "To short password");
     }
 
-    @Test
+    @Test //7
+    public void passwordConstructorShouldNotThrowExceptionForLongPassword() throws Exception {
+        assertDoesNotThrow(() -> {
+            getPassword("123456789012");
+        });
+    }
+
+    @Test //8
     public void simpleHashShouldBeCorrectForPassword() throws Exception {
         IPassword pw = getPassword("Password123!");
         assertEquals(pw.getPasswordHash(), -1323532559);
