@@ -6,20 +6,52 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SwedishSocialSecurityNumberTest {
     
-    private SSNHelper helper;
+    //private SSNHelper helper;
+    //private BuggySSNHelperAllowDayUpTo30 helper;
+    //private BuggySSNHelperAllowMonth0 helper;
+    //private BuggySSNHelperIncorrectFormat helper;
+    //private BuggySSNHelperIncorrectFormatFalse helper;
+    //private BuggySSNHelperMessyLuhn helper;
+    private BuggySSNHelperWrongLength helper;
     
     @BeforeEach
     public void setUp() {
-        helper = new SSNHelper();
+        //helper = new SSNHelper();
+        //helper = new BuggySSNHelperAllowDayUpTo30();
+        //helper = new BuggySSNHelperAllowMonth0();
+        //helper = new BuggySSNHelperIncorrectFormat();
+        //helper = new BuggySSNHelperIncorrectFormatFalse();
+        //helper = new BuggySSNHelperMessyLuhn();
+        helper = new BuggySSNHelperWrongLength();
     }
-    
+
     @Test
-    public void shouldAcceptValidSSN() throws Exception {
-        SwedishSocialSecurityNumber ssn = new SwedishSocialSecurityNumber("900101-0017", helper);
-        
-        assertEquals("90", ssn.getYear());
-        assertEquals("01", ssn.getMonth());
-        assertEquals("01", ssn.getDay());
-        assertEquals("0017", ssn.getSerialNumber());
+    public void isValidDayShouldReturnTrueForDayInput31() throws Exception {
+        assertTrue(helper.isValidDay("31"));
+    }
+
+    @Test
+    public void isValidMonthShourdReturnFalseForMounthInput0() throws Exception {
+        assertFalse(helper.isValidMonth("00"));
+    }
+
+    @Test
+    public void isCorrectFormatShouldReturnFalseForWrongFormat() throws Exception {
+        assertFalse(helper.isCorrectFormat("0408181111"));
+    }
+
+    @Test
+    public void isCorrectFormatShouldReturnTrueForCorrectFormat() throws Exception {
+        assertTrue(helper.isCorrectFormat("040818-1111"));
+    }
+
+    @Test
+    public void luhnIsCorrectShouldReturnTrueForKnownTrueValue() throws Exception {
+        assertTrue(helper.luhnIsCorrect("900101-0017"));
+    }
+
+    @Test
+    public void isCorrectLengthShouldReturnFalseForLongInput() throws Exception {
+        assertFalse(helper.isCorrectLength("900101-00170"));
     }
 }
